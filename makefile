@@ -1,3 +1,6 @@
 all:
-	g++ -std=c++11 ./src/main.cpp -o ./src/autom
-	./src/autom test
+	mkdir -p bin
+	g++ -c ./src/main.cpp
+	g++ -c ./src/command.cpp
+	g++ -std=c++11 main.o command.o -o ./bin/autom
+	./bin/autom help
