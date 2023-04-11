@@ -9,13 +9,14 @@ class Command
 public:
     Command(void);
     ~Command(void);
-    void addCommand(std::string name, void (*func)(char *argv[]));
-    void addDefaultCommand(void (*func)(char *argv[]));
-    void runCommand(char *name, char *argv[]);
+    void addCommand(std::string name, void (*func)(int argc, char *argv[]));
+    void addDefaultCommand(void (*func)(int argc,char *argv[]));
+    void runCommand(char *name, int argc, char *argv[]);
+    bool isInCommands(char *name);
 
 private:
-    std::map<std::string, void (*)(char *argv[])> commands;
-    void (*defaultCommand)(char *argv[]);
+    std::map<std::string, void (*)(int argc,char *argv[])> commands;
+    void (*defaultCommand)(int argc,char *argv[]);
 };
 
 #endif // COMMAND_H
