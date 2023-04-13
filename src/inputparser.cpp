@@ -28,10 +28,14 @@ InputParser::InputParser(int argc, char *argv[])
         }
     }
 }
+
+// get the value of a key
 std::string InputParser::getValue(std::string key)
 {
     return args[key];
 }
+
+// check if a key exists
 bool InputParser::hasKey(std::string key)
 {
     return args.count(key) > 0;
