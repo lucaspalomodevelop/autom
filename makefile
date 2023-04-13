@@ -3,7 +3,7 @@ CFLAGS = -std=c++11 -Wall
 SRCDIR = ./src
 BINDIR = ./bin
 
-$(BINDIR)/main: $(SRCDIR)/main.cpp $(SRCDIR)/command.cpp $(SRCDIR)/inputparser.cpp
+$(BINDIR)/autom: $(SRCDIR)/main.cpp $(SRCDIR)/command.cpp $(SRCDIR)/inputparser.cpp
 	$(CC) $(CFLAGS) $^ -o $@
 
 .PHONY: clean
