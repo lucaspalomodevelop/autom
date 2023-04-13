@@ -2,8 +2,8 @@
 
 int main(int argc, char *argv[])
 {
+
 #ifdef _WIN32
-#include <direct.h>
     _mkdir(dir.c_str());
 #else
     mkdir(dir.c_str(), 0777);
