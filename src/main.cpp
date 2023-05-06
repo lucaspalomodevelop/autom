@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-// input function for parsing arguments and creating commands and running them 
+// input function for parsing arguments and creating commands and running them
 void input(int argc, char *argv[])
 {
     InputParser input(argc, argv);
@@ -21,6 +21,7 @@ void input(int argc, char *argv[])
 
     command.addCommand("run", runScript);
     command.addCommand("help", help);
+    command.addCommand("ls", listScripts);
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -34,6 +35,17 @@ void runScript(int argc, char *argv[])
     std::string script = pre_script + dir + "/" + argv[1];
     // std::cout << "Running script: " << script << std::endl;
     system(script.c_str());
+}
+
+// list all scripts in the autom directory
+void listScripts(int argc, char *argv[])
+{
+    std::cout << "Scripts:" << std::endl;
+    for (const auto &entry : std::filesystem::directory_iterator(dir))
+    {
+        std::string name = entry.path().filename().string();
+        std::cout << "  " << name << std::endl;
+    }
 }
 
 // help function for showing help message
