@@ -55,5 +55,6 @@ void help(int argc, char *argv[])
     std::cout << "Commands:" << std::endl;
     std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
     std::cout << "  run [script] - Runs a script" << std::endl;
+    std::cout << "  ls - Lists all scripts" << std::endl;
     std::cout << "  help - Shows this help message" << std::endl;
 }
