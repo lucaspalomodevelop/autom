@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-// input function for parsing arguments and creating commands and running them 
+// input function for parsing arguments and creating commands and running them
 void input(int argc, char *argv[])
 {
     InputParser input(argc, argv);
@@ -21,6 +21,9 @@ void input(int argc, char *argv[])
 
     command.addCommand("run", runScript);
     command.addCommand("help", help);
+    command.addCommand("ls", listScripts);
+    command.addCommand("add", addScript);
+    command.addCommand("edit", editScript);
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -36,6 +39,60 @@ void runScript(int argc, char *argv[])
     system(script.c_str());
 }
 
+// list all scripts in the autom directory
+void listScripts(int argc, char *argv[])
+{
+    std::cout << "Scripts:" << std::endl;
+    for (const auto &entry : std::filesystem::directory_iterator(dir))
+    {
+        std::string name = entry.path().filename().string();
+        std::cout << "  " << name << std::endl;
+    }
+}
+
+// add a script in the autom directory
+void addScript(int argc, char *argv[])
+{
+
+    if (std::filesystem::exists(dir + "/" + argv[1]))
+    {
+        std::cout << "Script " << argv[1] <<" already exists" << std::endl;
+        return;
+    }
+
+    std::cout << "Adding script: " << argv[1] << std::endl;
+    std::string script = dir + "/" + argv[1];
+    std::ofstream file(script);
+
+#ifdef _WIN32
+    file << "@echo off" << std::endl;
+    _chmod(script.c_str(), _S_IREAD | _S_IWRITE);
+#else
+    file << "#!/bin/bash" << std::endl;
+    system(("chmod +x " + script).c_str());
+#endif
+
+    file.close();
+
+    editScript(argv[1]);
+}
+
+// edit a script in the autom directory
+void editScript(int argc, char *argv[])
+{
+    editScript(argv[1]);
+}
+
+void editScript(std::string name)
+{
+    std::string script = dir + "/" + name;
+#ifdef _WIN32
+    system(("notepad " + script).c_str());
+#else
+    system(("nano " + script).c_str());
+#endif
+}
+
 // help function for showing help message
 void help(int argc, char *argv[])
 {
@@ -43,5 +100,6 @@ void help(int argc, char *argv[])
     std::cout << "Commands:" << std::endl;
     std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
     std::cout << "  run [script] - Runs a script" << std::endl;
+    std::cout << "  ls - Lists all scripts" << std::endl;
     std::cout << "  help - Shows this help message" << std::endl;
 }
