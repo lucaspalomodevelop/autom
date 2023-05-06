@@ -3,7 +3,6 @@
 #include <string>
 #include <sys/stat.h>
 #include <filesystem>
-#include <fstream>
 
 #include "inputparser.h"
 #include "command.h"
