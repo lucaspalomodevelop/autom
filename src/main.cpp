@@ -22,6 +22,7 @@ void input(int argc, char *argv[])
     command.addCommand("run", runScript);
     command.addCommand("help", help);
     command.addCommand("ls", listScripts);
+    command.addCommand("add", addScript);
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -46,6 +47,13 @@ void listScripts(int argc, char *argv[])
         std::string name = entry.path().filename().string();
         std::cout << "  " << name << std::endl;
     }
+}
+
+// add a script to the autom directory
+void addScript(int argc, char *argv[])
+{
+    std::string scriptname = argv[2];
+    std::ofstream{dir + "/" + scriptname};
 }
 
 // help function for showing help message
