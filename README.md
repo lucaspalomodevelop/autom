@@ -6,8 +6,8 @@ autom is a command line tool for executing shell scripts, independent of the wor
 
 
 ## Installation-Requirments: 
-gcc 
-make
+- gcc 
+- make
 
 ## Compile: 
 ```bash	
