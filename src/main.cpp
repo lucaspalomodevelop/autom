@@ -17,13 +17,13 @@ int main(int argc, char *argv[])
 void input(int argc, char *argv[])
 {
     InputParser input(argc, argv);
-    Command command = Command();
 
-    command.addCommand("run", runScript);
-    command.addCommand("help", help);
-    command.addCommand("ls", listScripts);
-    command.addCommand("add", addScript);
-    command.addCommand("edit", editScript);
+    // std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
+    command.addCommand("run", "[script] - Runs a script", runScript);
+    command.addCommand("help", "- Shows this help message", help);
+    command.addCommand("ls", "- Lists all scripts ", listScripts);
+    command.addCommand("add", "[script] - Adds a script", addScript);
+    command.addCommand("edit", "[script] - Edits a script", editScript);
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -56,7 +56,7 @@ void addScript(int argc, char *argv[])
 
     if (std::filesystem::exists(dir + "/" + argv[1]))
     {
-        std::cout << "Script " << argv[1] <<" already exists" << std::endl;
+        std::cout << "Script " << argv[1] << " already exists" << std::endl;
         return;
     }
 
@@ -99,9 +99,5 @@ void help(int argc, char *argv[])
     std::cout << "Usage: autom [command] [options]" << std::endl;
     std::cout << "Commands:" << std::endl;
     std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
-    std::cout << "  run [script] - Runs a script" << std::endl;
-    std::cout << "  ls - Lists all scripts" << std::endl;
-    std::cout << "  add [script] - Adds a script" << std::endl;
-    std::cout << "  edit [script] - Edits a script" << std::endl;
-    std::cout << "  help - Shows this help message" << std::endl;
+    std::cout << command.listCommands() << std::endl;
 }

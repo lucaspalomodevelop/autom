@@ -1,6 +1,5 @@
 #include "command.h"
 
-
 Command::Command() {}
 
 Command::~Command() {}
@@ -8,7 +7,20 @@ Command::~Command() {}
 // add a command to the command map
 void Command::addCommand(std::string name, void (*func)(int argc, char *argv[]))
 {
-    commands[name] = func;
+    CommandInfo mycommand{
+        name,
+        "",
+        func};
+    commands[name] = mycommand;
+}
+
+void Command::addCommand(std::string name, std::string description, void (*func)(int argc, char *argv[]))
+{
+    CommandInfo mycommand{
+        name,
+        description,
+        func};
+    commands[name] = mycommand;
 }
 
 // add a default command to the command map
@@ -29,7 +41,7 @@ void Command::runCommand(char *name, int argc, char *argv[])
             argv[i] = argv[i + 1];
         }
 
-        commands[name](argc, argv);
+        commands[name].func(argc, argv);
     }
     else
     {
@@ -50,4 +62,14 @@ bool Command::isInCommands(char *name)
     }
     // std::cout << "Command not found: " << name << std::endl;
     return false;
+}
+
+std::string Command::listCommands()
+{
+    std::string list = "";
+    for (auto const &command : commands)
+    {
+        list += "\t" + command.second.name + " " + command.second.description + "\n";
+    }
+    return list;
 }

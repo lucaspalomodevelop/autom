@@ -18,6 +18,7 @@ std::string home = getenv("HOME");
 
 // directory for autom scripts
 std::string dir = home + "/autom";
+Command command = Command();
 
 // input function for parsing arguments and creating commands and running them
 void input(int argc, char *argv[]);
