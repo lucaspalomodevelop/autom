@@ -114,6 +114,6 @@ void help(int argc, char *argv[])
 {
     std::cout << "Usage: autom [command] [options]" << std::endl;
     std::cout << "Commands:" << std::endl;
-    std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
+    std::cout << "\t[script] - Runs a script if autom has not command with that name" << std::endl;
     std::cout << command.listCommands() << std::endl;
 }
