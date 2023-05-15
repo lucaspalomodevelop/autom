@@ -23,7 +23,9 @@ void input(int argc, char *argv[])
     command.addCommand("help", "- Shows this help message", help);
     command.addCommand("ls", "- Lists all scripts ", listScripts);
     command.addCommand("add", "[script] - Adds a script", addScript);
+    command.addCommand("new", "[script] - Adds a script", addScript);
     command.addCommand("edit", "[script] - Edits a script", editScript);
+    command.addCommand("remove", "[script] - Remove a script", removeScript);
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -91,6 +93,20 @@ void editScript(std::string name)
 #else
     system(("nano " + script).c_str());
 #endif
+}
+
+void removeScript(int argc, char *argv[])
+{
+    std::string script = dir + "/" + argv[1];
+    if (std::filesystem::exists(script))
+    {
+        std::cout << "Removing script: " << argv[1] << std::endl;
+        std::filesystem::remove(script);
+    }
+    else
+    {
+        std::cout << "Script " << argv[1] << " does not exist" << std::endl;
+    }
 }
 
 // help function for showing help message
