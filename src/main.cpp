@@ -26,6 +26,7 @@ void input(int argc, char *argv[])
     command.addCommand("new", "[script] - Adds a script", addScript);
     command.addCommand("edit", "[script] - Edits a script", editScript);
     command.addCommand("remove", "[script] - Remove a script", removeScript);
+    command.addCommand("show", "[script] - Shows a script", showScript);
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -39,6 +40,27 @@ void runScript(int argc, char *argv[])
     std::string script = pre_script + dir + "/" + argv[1];
     // std::cout << "Running script: " << script << std::endl;
     system(script.c_str());
+}
+
+void showScript(int argc, char *argv[])
+{
+    std::string script = dir + "/" + argv[1];
+    if (std::filesystem::exists(script))
+    {
+        std::cout << "Showing script: " << argv[1] << std::endl;
+        std::ifstream file(script);
+        std::string line;
+        int line_number = 0;
+        while (getline(file, line))
+        {
+            line_number++;
+            std::cout << line_number << " "<< line << std::endl;
+        }
+    }
+    else
+    {
+        std::cout << "Script " << argv[1] << " does not exist" << std::endl;
+    }
 }
 
 // list all scripts in the autom directory
