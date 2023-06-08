@@ -31,6 +31,8 @@ void addScript(int argc, char *argv[]);
 // edit a script in the autom directory
 void editScript(int argc, char *argv[]);
 void editScript(std::string name);
+// remove a script in the autom directory
+void removeScript(int argc, char *argv[]);
 // help function for showing help message
 void help(int argc, char *argv[]);
 // void create(int argc,char *argv[]);

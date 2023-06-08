@@ -30,7 +30,7 @@ void Command::addDefaultCommand(void (*func)(int argc, char *argv[]))
 }
 
 // run a command
-void Command::runCommand(char *name, int argc, char *argv[])
+void Command::runCommand(std::string name, int argc, char *argv[])
 {
     // std::cout << "Running command: " << name << std::endl;
     if (this->isInCommands(name))
@@ -50,7 +50,7 @@ void Command::runCommand(char *name, int argc, char *argv[])
 }
 
 // check if a command is in the command map
-bool Command::isInCommands(char *name)
+bool Command::isInCommands(std::string name)
 {
     for (auto const &command : commands)
     {
