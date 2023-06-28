@@ -55,8 +55,12 @@ public:
 
     void runSetup()
     {
-        createFolder();
-        createSettings();
+
+        if (!std::filesystem::exists(home))
+            createFolder();
+
+        if (!std::filesystem::exists(home + "/.automconfig.toml"))
+            createSettings();
     }
 };
 
