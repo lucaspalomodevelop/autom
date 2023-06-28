@@ -3,12 +3,6 @@
 int main(int argc, char *argv[])
 {
 
-#ifdef _WIN32
-    _mkdir(dir.c_str());
-#else
-    mkdir(dir.c_str(), 0777);
-#endif
-
     input(argc, argv);
     return 0;
 }
@@ -22,6 +16,7 @@ void input(int argc, char *argv[])
     command.addCommand("run", "[script] - Runs a script", runScript);
     command.addCommand("help", "- Shows this help message", help);
     command.addCommand("ls", "- Lists all scripts ", listScripts);
+    // command.addCommand("config", "open configure dialog", removeScript); 
     command.addCommand("add", "[script] - Adds a script", addScript);
     command.addCommand("new", "[script] - Adds a script", addScript);
     command.addCommand("edit", "[script] - Edits a script", editScript);
@@ -54,7 +49,7 @@ void showScript(int argc, char *argv[])
         while (getline(file, line))
         {
             line_number++;
-            std::cout << line_number << " "<< line << std::endl;
+            std::cout << line_number << " " << line << std::endl;
         }
     }
     else
@@ -110,11 +105,8 @@ void editScript(int argc, char *argv[])
 void editScript(std::string name)
 {
     std::string script = dir + "/" + name;
-#ifdef _WIN32
-    system(("notepad " + script).c_str());
-#else
-    system(("nano " + script).c_str());
-#endif
+
+    system((settings.getSetting("editor") + " " + script).c_str());
 }
 
 void removeScript(int argc, char *argv[])
