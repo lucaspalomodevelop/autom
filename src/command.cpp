@@ -67,9 +67,11 @@ bool Command::isInCommands(std::string name)
 std::string Command::listCommands()
 {
     std::string list = "";
-    for (auto const &command : commands)
+
+    
+    for (std::map<std::string, CommandInfo>::iterator it = commands.begin(); it != commands.end(); ++it)
     {
-        list += "\t" + command.second.name + " " + command.second.description + "\n";
+        list += "\t" + it->second.name + " " + it->second.description + "\n";
     }
     return list;
 }

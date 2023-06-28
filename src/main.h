@@ -36,10 +36,5 @@ void removeScript(int argc, char *argv[]);
 void showScript(int argc, char *argv[]);
 // help function for showing help message
 void help(int argc, char *argv[]);
-// void create(int argc,char *argv[]);
-// void remove(int argc,char *argv[]);
-// void list(int argc,char *argv[]);
-// void edit(int argc,char *argv[]);
-// void run(int argc,char *argv[]);
 
 #endif // MAIN_H
