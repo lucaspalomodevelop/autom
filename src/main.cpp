@@ -16,7 +16,7 @@ void input(int argc, char *argv[])
     command.addCommand("run", "[script] - Runs a script", runScript);
     command.addCommand("help", "- Shows this help message", help);
     command.addCommand("ls", "- Lists all scripts ", listScripts);
-    // command.addCommand("config", "open configure dialog", removeScript); 
+    // command.addCommand("config", "open configure dialog", removeScript);
     command.addCommand("add", "[script] - Adds a script", addScript);
     command.addCommand("new", "[script] - Adds a script", addScript);
     command.addCommand("edit", "[script] - Edits a script", editScript);
@@ -32,8 +32,13 @@ void runScript(int argc, char *argv[])
 
     // std::cout << "Running script: " << argv[1] << std::endl;
     std::string pre_script = "cd " + dir + " && ";
-    std::string script = pre_script + dir + "/" + argv[1];
-    // std::cout << "Running script: " << script << std::endl;
+    std::string args = "";
+    for (int i = 2; i < argc; i++)
+    {
+        args += argv[i];
+        args += " ";
+    }
+    std::string script = pre_script + dir + "/" + argv[1] + " " + args;
     system(script.c_str());
 }
 
