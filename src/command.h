@@ -25,9 +25,9 @@ public:
     // add a default command to the command map
     void addDefaultCommand(void (*func)(int argc, char *argv[]));
     // run a command
-    void runCommand(char *name, int argc, char *argv[]);
+    void runCommand(std::string name, int argc, char *argv[]);
     // check if a command is in the command map
-    bool isInCommands(char *name);
+    bool isInCommands(std::string name);
 
     std::string listCommands();
 
