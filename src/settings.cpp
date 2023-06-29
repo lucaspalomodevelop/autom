@@ -2,10 +2,11 @@
 
 #include "settings.h"
 
- Setup setup = Setup();
+Setup setup;
 
 Settings::Settings(void)
 {
+    setup = Setup();
     readSettings();
 }
 
@@ -24,7 +25,6 @@ void Settings::readSettings()
     }
     settings = toml::parse(file);
 }
-
 
 std::string Settings::getSetting(std::string path)
 {

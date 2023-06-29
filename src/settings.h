@@ -4,7 +4,11 @@
 #define SETTINGS_H
 
 #include "../lib/toml++/toml.h"
+
+#ifdef _WIN32
 #include <direct.h>
+#endif
+
 #include "settings.h"
 #include <fstream>
 #include <iostream>
