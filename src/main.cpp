@@ -69,6 +69,8 @@ void listScripts(int argc, char *argv[])
     std::cout << "Scripts:" << std::endl;
     for (const auto &entry : std::filesystem::directory_iterator(dir))
     {
+        if (entry.path().filename().string().substr(0, 1) == ".")
+            continue;
         std::string name = entry.path().filename().string();
         std::cout << "  " << name << std::endl;
     }
