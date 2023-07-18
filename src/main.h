@@ -29,7 +29,7 @@ void listScripts(int argc, char *argv[]);
 void addScript(int argc, char *argv[]);
 // edit a script in the autom directory
 void editScript(int argc, char *argv[]);
-void editScript(std::string name);
+void editScript(std::string name, std::string dir);
 // remove a script in the autom directory
 void removeScript(int argc, char *argv[]);
 // show a script in the autom directory
