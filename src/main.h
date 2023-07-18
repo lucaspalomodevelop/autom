@@ -16,7 +16,7 @@
 
 Settings settings;
 // directory for autom scripts
-std::string dir = "";
+std::string home_dir = "";
 Command command; 
 
 // input function for parsing arguments and creating commands and running them

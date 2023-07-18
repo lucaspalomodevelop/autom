@@ -5,7 +5,6 @@
 #include <string>
 #include <iostream>
 
-
 struct CommandInfo
 {
     std::string name;
@@ -19,6 +18,8 @@ public:
     Command(void);
     ~Command(void);
 
+    // add a command alias to the command map
+    void addCommandAlias(std::string name, std::string alias);
     // add a command to the command map
     void addCommand(std::string name, void (*func)(int argc, char *argv[]));
     void addCommand(std::string name, std::string description, void (*func)(int argc, char *argv[]));

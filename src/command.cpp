@@ -4,6 +4,17 @@ Command::Command() {}
 
 Command::~Command() {}
 
+
+// add a command alias to the command map
+void Command::addCommandAlias(std::string name, std::string alias)
+{
+    CommandInfo mycommand{
+        alias,
+        commands[name].description,
+        commands[name].func};
+    commands[alias] = mycommand;
+}
+
 // add a command to the command map
 void Command::addCommand(std::string name, void (*func)(int argc, char *argv[]))
 {
