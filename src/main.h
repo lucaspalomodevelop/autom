@@ -14,10 +14,10 @@
 #include "command.h"
 #include "settings.h"
 
-Settings settings = Settings();
+Settings settings;
 // directory for autom scripts
-std::string dir = settings.getSetting("autom_home_dir");
-Command command = Command();
+std::string dir = "";
+Command command; 
 
 // input function for parsing arguments and creating commands and running them
 void input(int argc, char *argv[]);
@@ -29,7 +29,7 @@ void listScripts(int argc, char *argv[]);
 void addScript(int argc, char *argv[]);
 // edit a script in the autom directory
 void editScript(int argc, char *argv[]);
-void editScript(std::string name);
+void editScript(std::string name, std::string dir);
 // remove a script in the autom directory
 void removeScript(int argc, char *argv[]);
 // show a script in the autom directory
