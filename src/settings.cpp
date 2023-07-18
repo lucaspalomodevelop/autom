@@ -23,11 +23,5 @@ void Settings::readSettings()
         setup.createSettings();
         readSettings();
     }
-    settings = toml::parse(file);
-}
-
-std::string Settings::getSetting(std::string path)
-{
-    std::string setting = settings[path].value_or("null");
-    return setting;
+    this->value = toml::parse(file);
 }

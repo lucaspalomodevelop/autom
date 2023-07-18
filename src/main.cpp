@@ -3,6 +3,11 @@
 int main(int argc, char *argv[])
 {
 
+    Settings &settings = Settings::Instance();
+    command = Command();
+
+    dir = settings.getSetting<std::string>("autom_home_dir");
+
     input(argc, argv);
     return 0;
 }
@@ -31,15 +36,29 @@ void runScript(int argc, char *argv[])
 {
 
     // std::cout << "Running script: " << argv[1] << std::endl;
-    std::string pre_script = "cd " + dir + " && ";
-    std::string args = "";
-    for (int i = 2; i < argc; i++)
+
+    std::vector<std::string> search_dirs = settings.getSetting<std::vector<std::string>>("search_dirs");
+
+    for (auto search_dir : search_dirs)
     {
-        args += argv[i];
-        args += " ";
+        std::string script = search_dir + "/" + argv[1];
+        if (std::filesystem::exists(script))
+        {
+            std::string pre_script = "cd " + search_dir + " && ";
+            std::string args = "";
+            for (int i = 2; i < argc; i++)
+            {
+                args += argv[i];
+                args += " ";
+            }
+            std::string script = pre_script + search_dir + "/" + argv[1] + " " + args;
+            std::cout << "executing: " << (search_dir + "/" + argv[1] + " " + args) << std::endl;
+            system(script.c_str());
+            return;
+        }
+
     }
-    std::string script = pre_script + dir + "/" + argv[1] + " " + args;
-    system(script.c_str());
+    
 }
 
 void showScript(int argc, char *argv[])
@@ -66,11 +85,21 @@ void showScript(int argc, char *argv[])
 // list all scripts in the autom directory
 void listScripts(int argc, char *argv[])
 {
-    std::cout << "Scripts:" << std::endl;
-    for (const auto &entry : std::filesystem::directory_iterator(dir))
+
+    std::vector<std::string> search_dirs = settings.getSetting<std::vector<std::string>>("search_dirs");
+
+    for (auto &search_dir : search_dirs)
     {
-        std::string name = entry.path().filename().string();
-        std::cout << "  " << name << std::endl;
+        std::cout << "Scripts (" << search_dir << "):" << std::endl;
+        for (const auto &entry : std::filesystem::directory_iterator(search_dir))
+        {
+            if (entry.path().filename().string().substr(0, 1) == ".")
+                continue;
+            if (entry.is_directory())
+                continue;
+            std::string name = entry.path().filename().string();
+            std::cout << "  " << name << std::endl;
+        }
     }
 }
 
@@ -111,7 +140,7 @@ void editScript(std::string name)
 {
     std::string script = dir + "/" + name;
 
-    system((settings.getSetting("editor") + " " + script).c_str());
+    system((+" " + script).c_str());
 }
 
 void removeScript(int argc, char *argv[])

@@ -14,10 +14,10 @@
 #include "command.h"
 #include "settings.h"
 
-Settings settings = Settings();
+Settings settings;
 // directory for autom scripts
-std::string dir = settings.getSetting("autom_home_dir");
-Command command = Command();
+std::string dir = "";
+Command command; 
 
 // input function for parsing arguments and creating commands and running them
 void input(int argc, char *argv[]);
