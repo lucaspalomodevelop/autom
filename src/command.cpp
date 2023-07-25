@@ -36,18 +36,20 @@ void Command::runCommand(std::string name, int argc, char *argv[])
     if (this->isInCommands(name))
     {
 
+        char *argv2[argc];
+
         for (int i = 0; i < argc; i++)
         {
-            argv[i] = argv[i + 1];
+            argv2[i] = argv[i + 1];
         }
-
-        commands[name].func(argc, argv);
+        commands[name].func(argc - 1, argv2);
     }
     else
     {
         defaultCommand(argc, argv);
     }
 }
+
 
 // check if a command is in the command map
 bool Command::isInCommands(std::string name)
