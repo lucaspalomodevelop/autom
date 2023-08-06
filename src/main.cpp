@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
     Settings &settings = Settings::Instance();
     command = Command();
 
-    dir = settings.getSetting<std::string>("autom_home_dir");
+    home_dir = settings.getSetting<std::string>("autom_home_dir");
 
     input(argc, argv);
     return 0;
@@ -20,13 +20,17 @@ void input(int argc, char *argv[])
     // std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
     command.addCommand("run", "[script] - Runs a script", runScript);
     command.addCommand("help", "- Shows this help message", help);
+    command.addCommandAlias("help", "h");
     command.addCommand("ls", "- Lists all scripts ", listScripts);
-    // command.addCommand("config", "open configure dialog", removeScript);
+    command.addCommandAlias("ls", "l");
     command.addCommand("add", "[script] - Adds a script", addScript);
-    command.addCommand("new", "[script] - Adds a script", addScript);
+    command.addCommandAlias("add", "a");
     command.addCommand("edit", "[script] - Edits a script", editScript);
+    command.addCommandAlias("edit", "e");
     command.addCommand("remove", "[script] - Remove a script", removeScript);
+    command.addCommandAlias("remove", "r");
     command.addCommand("show", "[script] - Shows a script", showScript);
+    command.addCommandAlias("show", "s");
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -35,32 +39,66 @@ void input(int argc, char *argv[])
 void runScript(int argc, char *argv[])
 {
 
-    // std::cout << "Running script: " << argv[1] << std::endl;
+    std::map<int, std::string> dir_options;
+     std::string dir = home_dir;
 
     for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
     {
-        std::string script = search_dir + "/" + argv[1];
-        if (std::filesystem::exists(script))
+        if (std::filesystem::exists(search_dir + "/" + argv[1]))
         {
-            std::string pre_script = "cd " + search_dir + " && ";
-            std::string args = "";
-            for (int i = 2; i < argc; i++)
-            {
-                args += argv[i];
-                args += " ";
-            }
-            std::string script = pre_script + search_dir + "/" + argv[1] + " " + args;
-            std::cout << "executing: " << (search_dir + "/" + argv[1] + " " + args) << std::endl;
-            system(script.c_str());
-            return;
+            dir_options[dir_options.size()] = search_dir;
         }
     }
+
+    if (dir_options.size() == 0)
+    {
+        std::cout << "Script " << argv[1] << " does not exist" << std::endl;
+        return;
+    }
+
+    if (dir_options.size() == 1)
+    {
+        dir = dir_options[0];
+    }
+
+    if (dir_options.size() > 1)
+    {
+        std::cout << "Which script do you want to run?" << std::endl;
+        for (auto &option : dir_options)
+        {
+            std::cout << option.first << " " << option.second << std::endl;
+        }
+        std::cout << "Enter number: ";
+        int num;
+        std::cin >> num;
+        dir = dir_options[num];
+    }
+
+    // for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
+    // {
+    std::string script = dir + "/" + argv[1];
+    if (std::filesystem::exists(script))
+    {
+        std::string pre_script = "cd " + dir + " && ";
+        std::string args = "";
+        for (int i = 2; i < argc; i++)
+        {
+            args += argv[i];
+            args += " ";
+        }
+        std::string script = pre_script + dir + "/" + argv[1] + " " + args;
+        std::cout << "executing: " << (dir + "/" + argv[1] + " " + args) << std::endl;
+        system(script.c_str());
+        return;
+    }
+    // }
 }
 
 void showScript(int argc, char *argv[])
 {
 
     std::map<int, std::string> dir_options;
+    std::string dir = "";
     for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
     {
         if (std::filesystem::exists(search_dir + "/" + argv[1]))
@@ -137,7 +175,7 @@ void listScripts(int argc, char *argv[])
 // add a script in the autom directory
 void addScript(int argc, char *argv[])
 {
-    std::string add_dir = dir;
+    std::string dir = home_dir;
 
     if (settings.getSetting<std::vector<std::string>>("search_dirs").size() > 1)
     {
@@ -150,17 +188,17 @@ void addScript(int argc, char *argv[])
         std::cout << "Enter number: ";
         int num;
         std::cin >> num;
-        add_dir = search_dirs[num];
+        dir = search_dirs[num];
     }
 
-    if (std::filesystem::exists(add_dir + "/" + argv[1]))
+    if (std::filesystem::exists(dir + "/" + argv[1]))
     {
-        std::cout << "Script " << argv[1] << " in folder " << add_dir << " already exists" << std::endl;
+        std::cout << "Script " << argv[1] << " in folder " << dir << " already exists" << std::endl;
         return;
     }
 
     std::cout << "Adding script: " << argv[1] << std::endl;
-    std::string script = add_dir + "/" + argv[1];
+    std::string script = dir + "/" + argv[1];
     std::ofstream file(script);
 
 #ifdef _WIN32
@@ -173,7 +211,7 @@ void addScript(int argc, char *argv[])
 
     file.close();
 
-    editScript(argv[1], add_dir);
+    editScript(argv[1], dir);
 }
 
 // edit a script in the autom directory
@@ -181,6 +219,7 @@ void editScript(int argc, char *argv[])
 {
 
     std::map<int, std::string> dir_options;
+     std::string dir = home_dir;
 
     for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
     {
@@ -227,8 +266,8 @@ void editScript(std::string name, std::string dir)
 void removeScript(int argc, char *argv[])
 {
 
-
     std::map<int, std::string> dir_options;
+     std::string dir = home_dir;
 
     for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
     {
