@@ -9,3 +9,6 @@ $(BINDIR)/autom: $(SRCDIR)/main.cpp $(SRCDIR)/command.cpp $(SRCDIR)/inputparser.
 .PHONY: clean
 clean:
 	rm -f $(BINDIR)/autom
+
+install: 
+	cp $(BINDIR)/autom /usr/local/bin/autom
