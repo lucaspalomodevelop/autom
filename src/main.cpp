@@ -31,6 +31,7 @@ void input(int argc, char *argv[])
     command.addCommandAlias("remove", "r");
     command.addCommand("show", "[script] - Shows a script", showScript);
     command.addCommandAlias("show", "s");
+
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -41,6 +42,8 @@ void runScript(int argc, char *argv[])
 
     std::map<int, std::string> dir_options;
     std::string dir = home_dir;
+
+    auto script_settings = settings.value["scripts"][argv[1]];
 
     for (auto search_dir : settings.value["search_dirs"])
     {
@@ -88,6 +91,16 @@ void runScript(int argc, char *argv[])
         }
         std::string script = pre_script + dir + "/" + argv[1] + " " + args;
         std::cout << "executing: " << (dir + "/" + argv[1] + " " + args) << std::endl;
+
+        // if (script_settings["sudo"])
+        //     script = "sudo " + script;
+
+        // if (script_settings["background"])
+        //     script = script + " &";
+
+        if (script_settings["pre_script"].size() > 0)
+            system(script_settings["pre_script"].get<std::string>().c_str());
+
         system(script.c_str());
         return;
     }
