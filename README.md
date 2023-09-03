@@ -8,6 +8,9 @@ autom is a command-line tool for executing shell scripts, independent of the wor
 - gcc
 - make
 
+## Libraries
+- [nlohmann/json](https://github.com/nlohmann/json)
+
 ## Compilation
 
 1. Clone or download the QuickNote repository.
