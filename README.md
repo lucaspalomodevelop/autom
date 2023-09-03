@@ -47,7 +47,7 @@ Use the following commands with autom:
 
 ## Configuration
 
-The configuration file is located at your home directory: `~/.autom/.automconfig.toml`. 
+The configuration file is located at your home directory: `~/.autom/.automconfig.json`. 
 
 
 ## Contributing
