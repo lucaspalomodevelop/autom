@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
     Settings &settings = Settings::Instance();
     command = Command();
 
-    home_dir = settings.getSetting<std::string>("autom_home_dir");
+    home_dir = settings.value["autom_home_dir"];
 
     input(argc, argv);
     return 0;
@@ -31,6 +31,7 @@ void input(int argc, char *argv[])
     command.addCommandAlias("remove", "r");
     command.addCommand("show", "[script] - Shows a script", showScript);
     command.addCommandAlias("show", "s");
+
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -40,11 +41,13 @@ void runScript(int argc, char *argv[])
 {
 
     std::map<int, std::string> dir_options;
-     std::string dir = home_dir;
+    std::string dir = home_dir;
 
-    for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
+    auto script_settings = settings.value["scripts"][argv[1]];
+
+    for (auto search_dir : settings.value["search_dirs"])
     {
-        if (std::filesystem::exists(search_dir + "/" + argv[1]))
+        if (std::filesystem::exists((std::string)search_dir + "/" + argv[1]))
         {
             dir_options[dir_options.size()] = search_dir;
         }
@@ -88,6 +91,16 @@ void runScript(int argc, char *argv[])
         }
         std::string script = pre_script + dir + "/" + argv[1] + " " + args;
         std::cout << "executing: " << (dir + "/" + argv[1] + " " + args) << std::endl;
+
+        // if (script_settings["sudo"])
+        //     script = "sudo " + script;
+
+        // if (script_settings["background"])
+        //     script = script + " &";
+
+        if (script_settings["pre_script"].size() > 0)
+            system(script_settings["pre_script"].get<std::string>().c_str());
+
         system(script.c_str());
         return;
     }
@@ -99,9 +112,9 @@ void showScript(int argc, char *argv[])
 
     std::map<int, std::string> dir_options;
     std::string dir = "";
-    for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
+    for (auto search_dir : settings.value["search_dirs"])
     {
-        if (std::filesystem::exists(search_dir + "/" + argv[1]))
+        if (std::filesystem::exists((std::string)search_dir + "/" + argv[1]))
         {
             dir_options[dir_options.size()] = search_dir;
         }
@@ -155,9 +168,7 @@ void showScript(int argc, char *argv[])
 void listScripts(int argc, char *argv[])
 {
 
-    std::vector<std::string> search_dirs = settings.getSetting<std::vector<std::string>>("search_dirs");
-
-    for (auto &search_dir : search_dirs)
+    for (auto &search_dir : settings.value["search_dirs"])
     {
         std::cout << "Scripts (" << search_dir << "):" << std::endl;
         for (const auto &entry : std::filesystem::directory_iterator(search_dir))
@@ -177,10 +188,10 @@ void addScript(int argc, char *argv[])
 {
     std::string dir = home_dir;
 
-    if (settings.getSetting<std::vector<std::string>>("search_dirs").size() > 1)
+    if (settings.value["search_dirs"].size() > 1)
     {
         std::cout << "Which directory do you want to add the script to?" << std::endl;
-        std::vector<std::string> search_dirs = settings.getSetting<std::vector<std::string>>("search_dirs");
+        auto search_dirs = settings.value["search_dirs"];
         for (int i = 0; i < search_dirs.size(); i++)
         {
             std::cout << i << " " << search_dirs[i] << std::endl;
@@ -219,11 +230,11 @@ void editScript(int argc, char *argv[])
 {
 
     std::map<int, std::string> dir_options;
-     std::string dir = home_dir;
+    std::string dir = home_dir;
 
-    for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
+    for (auto search_dir : settings.value["search_dirs"])
     {
-        if (std::filesystem::exists(search_dir + "/" + argv[1]))
+        if (std::filesystem::exists((std::string)search_dir + "/" + argv[1]))
         {
             dir_options[dir_options.size()] = search_dir;
         }
@@ -260,18 +271,18 @@ void editScript(std::string name, std::string dir)
 {
     std::string script = dir + "/" + name;
 
-    system((settings.getSetting<std::string>("editor") + " " + script).c_str());
+    system(((std::string)settings.value["editor"] + " " + script).c_str());
 }
 
 void removeScript(int argc, char *argv[])
 {
 
     std::map<int, std::string> dir_options;
-     std::string dir = home_dir;
+    std::string dir = home_dir;
 
-    for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
+    for (auto search_dir : settings.value["search_dirs"])
     {
-        if (std::filesystem::exists(search_dir + "/" + argv[1]))
+        if (std::filesystem::exists((std::string)search_dir + "/" + argv[1]))
         {
             dir_options[dir_options.size()] = search_dir;
         }

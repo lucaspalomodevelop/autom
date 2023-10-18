@@ -3,7 +3,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-
 #include <iostream>
 #include <string>
 #include <sys/stat.h>
@@ -17,7 +16,7 @@
 Settings settings;
 // directory for autom scripts
 std::string home_dir = "";
-Command command; 
+Command command;
 
 // input function for parsing arguments and creating commands and running them
 void input(int argc, char *argv[]);
