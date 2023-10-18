@@ -157,6 +157,16 @@ std::string EnterPassword()
         c = getch();
         if (c == '\n' || c == '\r')
             break;
+
+        if (c == '\b')
+        {
+            if (password.size() > 0)
+            {
+                password.pop_back();
+                std::cout << "\b \b";
+            }
+            continue;
+        }
         password += c;
         std::cout << "*";
     }
