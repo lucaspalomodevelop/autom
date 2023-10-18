@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <filesystem>
 #include <fstream>
+#include <conio.h>
 
 #include "inputparser.h"
 #include "command.h"
@@ -33,6 +34,13 @@ void editScript(std::string name, std::string dir);
 void removeScript(int argc, char *argv[]);
 // show a script in the autom directory
 void showScript(int argc, char *argv[]);
+// encrypt a script in the autom directory
+void encryptScript(int argc, char *argv[]);
+// decrypt a script in the autom directory
+void decryptScript(int argc, char *argv[]);
+
+std::string EnterPassword();
+
 // help function for showing help message
 void help(int argc, char *argv[]);
 

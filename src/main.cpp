@@ -31,7 +31,10 @@ void input(int argc, char *argv[])
     command.addCommandAlias("remove", "r");
     command.addCommand("show", "[script] - Shows a script", showScript);
     command.addCommandAlias("show", "s");
-
+    command.addCommand("encrypt", "[script] - Encrypts a script", encryptScript);
+    command.addCommandAlias("encrypt", "enc");
+    command.addCommand("decrypt", "[script] - Decrypts a script", decryptScript);
+    command.addCommandAlias("decrypt", "dec");
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
 }
@@ -105,6 +108,60 @@ void runScript(int argc, char *argv[])
         return;
     }
     // }
+}
+
+// encrypt a script in the autom directory
+void encryptScript(int argc, char *argv[])
+{
+    std::string password = "";
+    std::string password2 = "";
+    std::string script = home_dir + "/" + argv[1];
+
+    std::cout << "encrypting file " << script << std::endl;
+    std::cout << "Enter password: ";
+    password = EnterPassword();
+    std::cout << "Enter password again: ";
+    password2 = EnterPassword();
+
+    if (password != password2)
+    {
+        std::cout << "Passwords do not match" << std::endl;
+        return;
+    }
+
+    if (password == "")
+    {
+        std::cout << "Password cannot be empty" << std::endl;
+        return;
+    }
+
+    if (!std::filesystem::exists(script))
+    {
+        std::cout << "Script " << argv[1] << " does not exist" << std::endl;
+        return;
+    }
+}
+
+// encrypt a script in the autom directory
+void decryptScript(int argc, char *argv[])
+{
+    std::cout << "decrypting file " << argv[1] << std::endl;
+}
+
+std::string EnterPassword()
+{
+    std::string password = "";
+    char c;
+    while (true)
+    {
+        c = getch();
+        if (c == '\n')
+            break;
+        password += c;
+        std::cout << "*";
+    }
+    std::cout << std::endl;
+    return password;
 }
 
 void showScript(int argc, char *argv[])
