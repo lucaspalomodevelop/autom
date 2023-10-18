@@ -155,7 +155,7 @@ std::string EnterPassword()
     while (true)
     {
         c = getch();
-        if (c == '\n')
+        if (c == '\n' || c == '\r')
             break;
         password += c;
         std::cout << "*";
