@@ -10,6 +10,13 @@
 #include <fstream>
 #include <conio.h>
 
+#include "../libs/cryptopp/cryptlib.h"
+#include "../libs/cryptopp/rijndael.h"
+#include "../libs/cryptopp/modes.h"
+#include "../libs/cryptopp/files.h"
+#include "../libs/cryptopp/osrng.h"
+#include "../libs/cryptopp/hex.h"
+
 #include "inputparser.h"
 #include "command.h"
 #include "settings.h"
@@ -35,8 +42,10 @@ void removeScript(int argc, char *argv[]);
 // show a script in the autom directory
 void showScript(int argc, char *argv[]);
 // encrypt a script in the autom directory
+std::string encrypt(std::string content, std::string pass);
 void encryptScript(int argc, char *argv[]);
 // decrypt a script in the autom directory
+std::string decrypt(std::string content, std::string pass);
 void decryptScript(int argc, char *argv[]);
 
 std::string EnterPassword();

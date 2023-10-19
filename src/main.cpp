@@ -111,12 +111,18 @@ void runScript(int argc, char *argv[])
 }
 
 // encrypt a script in the autom directory
+std::string encrypt(std::string content, std::string pass)
+{
+
+}
+
 void encryptScript(int argc, char *argv[])
 {
     std::string password = "";
     std::string password2 = "";
     std::string script = home_dir + "/" + argv[1];
-
+    std::string scriptContent = "";
+    std::string encryptScriptContent = "CRYPT;AES256\n";
     std::cout << "encrypting file " << script << std::endl;
     std::cout << "Enter password: ";
     password = EnterPassword();
@@ -140,9 +146,24 @@ void encryptScript(int argc, char *argv[])
         std::cout << "Script " << argv[1] << " does not exist" << std::endl;
         return;
     }
+
+    std::fstream file(script);
+    std::string line;
+    while (getline(file, line))
+    {
+        scriptContent += line + "\n";
+    }
+    file.close();
+
+    encryptScriptContent += encrypt(scriptContent, password);
 }
 
 // encrypt a script in the autom directory
+
+std::string decrypt(std::string content, std::string pass)
+{
+}
+
 void decryptScript(int argc, char *argv[])
 {
     std::cout << "decrypting file " << argv[1] << std::endl;
