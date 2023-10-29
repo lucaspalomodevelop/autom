@@ -16,12 +16,12 @@ Settings::~Settings(void)
 
 void Settings::readSettings()
 {
-    std::ifstream file(setup.home + "/.automconfig.toml");
+    std::ifstream file(setup.home + "/.automconfig.json");
     if (!file.is_open())
     {
-        std::cout << "Error:" + setup.home + "/.automconfig.toml not found" << std::endl;
+        std::cout << "Error:" + setup.home + "/.automconfig.json not found" << std::endl;
         setup.createSettings();
         readSettings();
     }
-    this->value = toml::parse(file);
+    this->value = json::parse(file);
 }

@@ -9,6 +9,9 @@
 #include <filesystem>
 #include <fstream>
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 class Setup
 {
 private:
@@ -45,12 +48,19 @@ public:
     {
         std::replace(home.begin(), home.end(), '\\', '/');
 
-        std::ofstream file(home + "/.automconfig.toml");
-        file << "editor = \"" << editor << "\"" << std::endl;
-        file << "search_dirs = [\"" << home << "\"]" << std::endl;
-        file << "autom_home_dir = \"" << home << "\"" << std::endl;
+
+        std::ofstream file(home + "/.automconfig.json");
+
+         json j = {
+            {"editor", editor},
+            {"search_dirs", {home}},
+            {"autom_home_dir", home}
+        };
+
+        file << j.dump(4);
 
         file.close();
+
     }
 
     void runSetup()
@@ -59,7 +69,7 @@ public:
         if (!std::filesystem::exists(home))
             createFolder();
 
-        if (!std::filesystem::exists(home + "/.automconfig.toml"))
+        if (!std::filesystem::exists(home + "/.automconfig.json"))
             createSettings();
     }
 };
