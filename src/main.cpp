@@ -31,6 +31,7 @@ void input(int argc, char *argv[])
     command.addCommandAlias("remove", "r");
     command.addCommand("show", "[script] - Shows a script", showScript);
     command.addCommandAlias("show", "s");
+    command.addCommand("config", "<command> - Configures autom", config);
 
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
@@ -105,6 +106,54 @@ void runScript(int argc, char *argv[])
         return;
     }
     // }
+}
+
+void config(int argc, char *argv[])
+{
+
+    if (argc < 1)
+    {
+        std::cout << "Usage: autom config <command>" << std::endl;
+        return;
+    }
+
+    if (std::string(argv[1]) == "show")
+    {
+        std::cout << "Settings:" << std::endl;
+        std::cout << settings.getSettingsAsString() << std::endl;
+    }
+
+    // if (argv[2] == "editor")
+    // {
+    //     std::cout << "Enter editor: ";
+    //     std::string editor;
+    //     std::cin >> editor;
+    //     settings.value["editor"] = editor;
+    //     settings.save();
+    //     return;
+    // }
+
+    // if (argv[2] == "search_dirs")
+    // {
+    //     std::cout << "Enter search dirs: ";
+    //     std::string search_dirs;
+    //     std::cin >> search_dirs;
+    //     settings.value["search_dirs"] = search_dirs;
+    //     settings.save();
+    //     return;
+    // }
+
+    // if (argv[2] == "scripts")
+    // {
+    //     std::cout << "Enter scripts: ";
+    //     std::string scripts;
+    //     std::cin >> scripts;
+    //     settings.value["scripts"] = scripts;
+    //     settings.save();
+    //     return;
+    // }
+
+    // std::cout << "Command " << argv[2] << " does not exist" << std::endl;
 }
 
 void showScript(int argc, char *argv[])

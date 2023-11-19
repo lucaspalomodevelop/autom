@@ -22,6 +22,8 @@ Command command;
 void input(int argc, char *argv[]);
 // run a script with is in the autom directory
 void runScript(int argc, char *argv[]);
+// config function for configuring autom
+void config(int argc, char *argv[]);
 // list all scripts in the autom directory
 void listScripts(int argc, char *argv[]);
 // add a script in the autom directory

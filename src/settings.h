@@ -29,6 +29,7 @@ public:
     Settings(void);
     ~Settings(void);
     void readSettings();
+    std::string getSettingsAsString();
     Settings &operator=(const Settings &) = default;
 };
 
