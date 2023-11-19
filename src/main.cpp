@@ -123,6 +123,34 @@ void config(int argc, char *argv[])
         std::cout << settings.getSettingsAsString() << std::endl;
     }
 
+    else if (std::string(argv[1]) == "edit")
+    {
+        if (argc > 2)
+        {
+            if (std::string(argv[2]) == "editor")
+            {
+
+                std::string editor;
+                if (argc > 3)
+                    editor = argv[3];
+                else
+                {
+                    std::cout << "Enter editor: ";
+                    std::cin >> editor;
+                }
+
+                settings.value["editor"] = editor;
+                settings.writeSettings();
+                return;
+            }
+            return;
+        }
+        else
+        {
+            system((std::string(settings.value["editor"]) + " " + settings.filepath).c_str());
+        }
+    }
+
     // if (argv[2] == "editor")
     // {
     //     std::cout << "Enter editor: ";

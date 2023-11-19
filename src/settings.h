@@ -26,9 +26,11 @@ private:
 
 public:
     json value;
+    std::string filepath;
     Settings(void);
     ~Settings(void);
     void readSettings();
+    void writeSettings();
     std::string getSettingsAsString();
     Settings &operator=(const Settings &) = default;
 };
