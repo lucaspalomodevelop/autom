@@ -148,7 +148,6 @@ void showScript(int argc, char *argv[])
     std::cout << "Showing script: " << script << std::endl;
     if (std::filesystem::exists(script))
     {
-        std::cout << "Showing script: " << argv[1] << std::endl;
         std::ifstream file(script);
         std::string line;
         int line_number = 0;
