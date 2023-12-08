@@ -31,9 +31,34 @@ void input(int argc, char *argv[])
     command.addCommandAlias("remove", "r");
     command.addCommand("show", "[script] - Shows a script", showScript);
     command.addCommandAlias("show", "s");
+    command.addCommand("config", "<command> - Configures autom", config);
 
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
+}
+
+std::string scriptBuilder(std::string script, std::string args, json script_settings)
+{
+
+    std::string builded_script = "";
+    builded_script = script;
+
+    if (script_settings.contains("sudo") && script_settings.at("sudo").get<bool>())
+        builded_script = "sudo " + script;
+
+    if (script_settings.contains("pre_script") && script_settings.at("pre_script").size() > 0)
+        builded_script = script_settings.at("pre_script").get<std::string>() + " && " + builded_script;
+
+    if (script_settings.contains("args") && script_settings.at("args").size() > 0)
+        builded_script = builded_script + " " + script_settings.at("args").get<std::string>();
+
+    if (script_settings.contains("background") && script_settings.at("background").get<bool>())
+        builded_script = builded_script + " &";
+
+    std::cout
+        << "script: " << builded_script << std::endl;
+
+    return builded_script;
 }
 
 // run a script with is in the autom directory
@@ -89,7 +114,8 @@ void runScript(int argc, char *argv[])
             args += argv[i];
             args += " ";
         }
-        std::string script = pre_script + dir + "/" + argv[1] + " " + args;
+        // std::string script = pre_script + dir + "/" + argv[1] + " " + args;
+        script = scriptBuilder(script, args, script_settings);
         std::cout << "executing: " << (dir + "/" + argv[1] + " " + args) << std::endl;
 
         // if (script_settings["sudo"])
@@ -98,13 +124,89 @@ void runScript(int argc, char *argv[])
         // if (script_settings["background"])
         //     script = script + " &";
 
-        if (script_settings["pre_script"].size() > 0)
-            system(script_settings["pre_script"].get<std::string>().c_str());
+        // if (script_settings["pre_script"].size() > 0)
+        //     system(script_settings["pre_script"].get<std::string>().c_str());
 
         system(script.c_str());
         return;
     }
     // }
+}
+
+void config(int argc, char *argv[])
+{
+
+    if (argc < 1)
+    {
+        std::cout << "Usage: autom config <command>" << std::endl;
+        return;
+    }
+
+    if (std::string(argv[1]) == "show")
+    {
+        std::cout << "Settings:" << std::endl;
+        std::cout << settings.getSettingsAsString() << std::endl;
+    }
+
+    else if (std::string(argv[1]) == "edit")
+    {
+        if (argc > 2)
+        {
+            if (std::string(argv[2]) == "editor")
+            {
+
+                std::string editor;
+                if (argc > 3)
+                    editor = argv[3];
+                else
+                {
+                    std::cout << "Enter editor: ";
+                    std::cin >> editor;
+                }
+
+                settings.value["editor"] = editor;
+                settings.writeSettings();
+                return;
+            }
+            return;
+        }
+        else
+        {
+            system((std::string(settings.value["editor"]) + " " + settings.filepath).c_str());
+        }
+    }
+
+    // if (argv[2] == "editor")
+    // {
+    //     std::cout << "Enter editor: ";
+    //     std::string editor;
+    //     std::cin >> editor;
+    //     settings.value["editor"] = editor;
+    //     settings.save();
+    //     return;
+    // }
+
+    // if (argv[2] == "search_dirs")
+    // {
+    //     std::cout << "Enter search dirs: ";
+    //     std::string search_dirs;
+    //     std::cin >> search_dirs;
+    //     settings.value["search_dirs"] = search_dirs;
+    //     settings.save();
+    //     return;
+    // }
+
+    // if (argv[2] == "scripts")
+    // {
+    //     std::cout << "Enter scripts: ";
+    //     std::string scripts;
+    //     std::cin >> scripts;
+    //     settings.value["scripts"] = scripts;
+    //     settings.save();
+    //     return;
+    // }
+
+    // std::cout << "Command " << argv[2] << " does not exist" << std::endl;
 }
 
 void showScript(int argc, char *argv[])
