@@ -20,8 +20,12 @@ Command command;
 
 // input function for parsing arguments and creating commands and running them
 void input(int argc, char *argv[]);
+// build a script
+std::string scriptBuilder(std::string pre_script, std::string script_name, std::string args, json script_settings);
 // run a script with is in the autom directory
 void runScript(int argc, char *argv[]);
+// config function for configuring autom
+void config(int argc, char *argv[]);
 // list all scripts in the autom directory
 void listScripts(int argc, char *argv[]);
 // add a script in the autom directory

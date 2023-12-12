@@ -9,7 +9,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include <nlohmann/json.hpp>
+#include "../libs/json/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
 
 class Setup
@@ -48,19 +48,16 @@ public:
     {
         std::replace(home.begin(), home.end(), '\\', '/');
 
-
         std::ofstream file(home + "/.automconfig.json");
 
-         json j = {
+        json j = {
             {"editor", editor},
             {"search_dirs", {home}},
-            {"autom_home_dir", home}
-        };
+            {"autom_home_dir", home}};
 
         file << j.dump(4);
 
         file.close();
-
     }
 
     void runSetup()

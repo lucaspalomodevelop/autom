@@ -3,7 +3,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <nlohmann/json.hpp>
+#include "../libs/json/single_include/nlohmann/json.hpp"
 
 using json = nlohmann::json;
 
@@ -26,9 +26,12 @@ private:
 
 public:
     json value;
+    std::string filepath;
     Settings(void);
     ~Settings(void);
     void readSettings();
+    void writeSettings();
+    std::string getSettingsAsString();
     Settings &operator=(const Settings &) = default;
 };
 
