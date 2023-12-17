@@ -8,6 +8,8 @@
 #include <sys/stat.h>
 #include <filesystem>
 #include <fstream>
+#include <algorithm>
+#include <vector>
 
 #include "../libs/json/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
@@ -24,10 +26,14 @@ public:
     std::string home = getenv("HOME");
     std::string editor = "vim";
 #endif
+
+    std::vector<std::string> folders_to_create;
+
     Setup(/* args */)
     {
         home = home + "/.autom";
 
+        folders_to_create = {home, home + "/temp"};
         runSetup();
     }
 
@@ -38,9 +44,19 @@ public:
     void createFolder()
     {
 #ifdef _WIN32
-        _mkdir((home).c_str());
+        for (std::string folder : folders_to_create)
+        {
+            if (!std::filesystem::exists(folder))
+                _mkdir(folder.c_str());
+        }
 #else
-        mkdir((home).c_str(), 0777);
+        for (std::string folder : folders_to_create)
+        {
+            if (!std::filesystem::exists(folder))
+            {
+                mkdir(folder.c_str(), 0777);
+            }
+        }
 #endif
     }
 
@@ -53,6 +69,7 @@ public:
         json j = {
             {"editor", editor},
             {"search_dirs", {home}},
+            {"temp_dir", home + "/temp"},
             {"autom_home_dir", home}};
 
         file << j.dump(4);
@@ -62,9 +79,7 @@ public:
 
     void runSetup()
     {
-
-        if (!std::filesystem::exists(home))
-            createFolder();
+        createFolder();
 
         if (!std::filesystem::exists(home + "/.automconfig.json"))
             createSettings();

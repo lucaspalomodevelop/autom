@@ -8,6 +8,9 @@
 #include <sys/stat.h>
 #include <filesystem>
 #include <fstream>
+#include "../libs/json/single_include/nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 #include "inputparser.h"
 #include "command.h"
@@ -17,6 +20,12 @@ Settings settings;
 // directory for autom scripts
 std::string home_dir = "";
 Command command;
+
+struct automScript
+{
+    json settings;
+    std::string script;
+};
 
 // input function for parsing arguments and creating commands and running them
 void input(int argc, char *argv[]);
