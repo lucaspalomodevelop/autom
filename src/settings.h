@@ -3,6 +3,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "debug.h"
 #include "../libs/json/single_include/nlohmann/json.hpp"
 
 using json = nlohmann::json;

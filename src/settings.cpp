@@ -17,25 +17,39 @@ Settings::~Settings(void)
 
 void Settings::readSettings()
 {
+    DEBUG("Reading settings");
     std::ifstream file(filepath);
     if (!file.is_open())
     {
+        DEBUG("Settings file not found");
         std::cout << "Error:" + setup.home + "/.automconfig.json not found" << std::endl;
+
+        DEBUG("Creating settings");
         setup.createSettings();
+
+        DEBUG("Reading settings");
         readSettings();
     }
+
+    DEBUG("Parsing settings");
     this->value = json::parse(file);
 }
 
 std::string Settings::getSettingsAsString()
 {
+    DEBUG("Getting settings as string");
     return this->value.dump(4);
 }
 
 void Settings::writeSettings()
 {
+    DEBUG("Writing settings");
     std::ofstream file(setup.home + "/.automconfig.json");
+
+    DEBUG("Writing settings to file");
     file << this->value.dump(4);
+
+    DEBUG("Closing file");
     file.close();
 }
 

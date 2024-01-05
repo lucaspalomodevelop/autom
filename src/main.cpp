@@ -3,9 +3,13 @@
 int main(int argc, char *argv[])
 {
 
+    DEBUG("new obj settings");
     Settings &settings = Settings::Instance();
+
+    DEBUG("new obj command");
     command = Command();
 
+    DEBUG("get home dir from settings");
     home_dir = settings.value["autom_home_dir"];
 
     input(argc, argv);
@@ -18,22 +22,52 @@ void input(int argc, char *argv[])
     InputParser input(argc, argv);
 
     // std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
+    DEBUG("add 'run' command");
     command.addCommand("run", "[script] - Runs a script", runScript);
+
+    DEBUG("add 'help' command");
     command.addCommand("help", "- Shows this help message", help);
+
+    DEBUG("add 'h' alias for 'help' command");
     command.addCommandAlias("help", "h");
+
+    DEBUG("add 'ls' command");
     command.addCommand("ls", "- Lists all scripts ", listScripts);
+
+    DEBUG("add 'l' alias for 'ls' command");
     command.addCommandAlias("ls", "l");
+
+    DEBUG("add 'add' command");
     command.addCommand("add", "[script] - Adds a script", addScript);
+
+    DEBUG("add 'a' alias for 'add' command");
     command.addCommandAlias("add", "a");
+
+    DEBUG("add 'edit' command");
     command.addCommand("edit", "[script] - Edits a script", editScript);
+
+    DEBUG("add 'e' alias for 'edit' command");
     command.addCommandAlias("edit", "e");
+
+    DEBUG("add 'remove' command");
     command.addCommand("remove", "[script] - Remove a script", removeScript);
+
+    DEBUG("add 'r' alias for 'remove' command");
     command.addCommandAlias("remove", "r");
+
+    DEBUG("add 'show' command");
     command.addCommand("show", "[script] - Shows a script", showScript);
+
+    DEBUG("add 's' alias for 'show' command");
     command.addCommandAlias("show", "s");
+
+    DEBUG("add 'config' command");
     command.addCommand("config", "<command> - Configures autom", config);
 
+    DEBUG("add default command");
     command.addDefaultCommand(runScript);
+
+    DEBUG("run command");
     command.runCommand(argv[1], argc, argv);
 }
 
@@ -43,21 +77,27 @@ std::string scriptBuilder(std::string script, std::string args, json script_sett
     std::string builded_script = "";
     builded_script = script;
 
+    DEBUG("script before sudo: " << builded_script);
     if (script_settings.contains("sudo") && script_settings.at("sudo").get<bool>())
         builded_script = "sudo " + script;
 
+    DEBUG("script before pre_script: " << builded_script);
     if (script_settings.contains("pre_script") && script_settings.at("pre_script").size() > 0)
         builded_script = script_settings.at("pre_script").get<std::string>() + " && " + builded_script;
 
+    DEBUG("script before config args: " << builded_script);
     if (script_settings.contains("args") && script_settings.at("args").size() > 0)
         builded_script = builded_script + " " + script_settings.at("args").get<std::string>();
 
+    DEBUG("script before args: " << builded_script);
+    if (args.size() > 0)
+        builded_script = builded_script + " " + args;
+
+    DEBUG("script before background: " << builded_script);
     if (script_settings.contains("background") && script_settings.at("background").get<bool>())
         builded_script = builded_script + " &";
 
-    std::cout
-        << "script: " << builded_script << std::endl;
-
+    DEBUG("script: " << builded_script);
     return builded_script;
 }
 
@@ -68,6 +108,7 @@ void runScript(int argc, char *argv[])
     std::map<int, std::string> dir_options;
     std::string dir = home_dir;
 
+    DEBUG("get script settings");
     auto script_settings = settings.value["scripts"][argv[1]];
 
     for (auto search_dir : settings.value["search_dirs"])
@@ -80,54 +121,52 @@ void runScript(int argc, char *argv[])
 
     if (dir_options.size() == 0)
     {
+        DEBUG("script " << argv[1] << " does not exist");
         std::cout << "Script " << argv[1] << " does not exist" << std::endl;
         return;
     }
 
     if (dir_options.size() == 1)
     {
+        DEBUG("script " << argv[1] << " exists in " << dir_options[0]);
         dir = dir_options[0];
     }
 
     if (dir_options.size() > 1)
     {
+        DEBUG("script " << argv[1] << " exists in multiple directories");
         std::cout << "Which script do you want to run?" << std::endl;
         for (auto &option : dir_options)
         {
+            DEBUG("option: " << option.first << " " << option.second);
             std::cout << option.first << " " << option.second << std::endl;
         }
         std::cout << "Enter number: ";
         int num;
         std::cin >> num;
+        DEBUG("selected option: " << num);
+        DEBUG("selected dir: " << dir_options[num]);
         dir = dir_options[num];
     }
 
-    // for (auto search_dir : settings.getSetting<std::vector<std::string>>("search_dirs"))
-    // {
     std::string script = dir + "/" + argv[1];
     if (std::filesystem::exists(script))
     {
+        DEBUG("script exists");
         std::string pre_script = "cd " + dir + " && ";
         std::string args = "";
         for (int i = 2; i < argc; i++)
         {
+            DEBUG("argv[" << i << "]: " << argv[i]);
             args += argv[i];
             args += " ";
         }
-        // std::string script = pre_script + dir + "/" + argv[1] + " " + args;
+
         script = scriptBuilder(script, args, script_settings);
-        std::cout << "executing: " << (dir + "/" + argv[1] + " " + args) << std::endl;
 
-        // if (script_settings["sudo"])
-        //     script = "sudo " + script;
-
-        // if (script_settings["background"])
-        //     script = script + " &";
-
-        // if (script_settings["pre_script"].size() > 0)
-        //     system(script_settings["pre_script"].get<std::string>().c_str());
-
+        DEBUG("run script");
         system(script.c_str());
+        DEBUG("script finished");
         return;
     }
     // }

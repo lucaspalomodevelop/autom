@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 
+#include "debug.h"
+
 struct CommandInfo
 {
     std::string name;

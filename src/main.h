@@ -13,6 +13,8 @@
 #include "command.h"
 #include "settings.h"
 
+#include "debug.h"
+
 Settings settings;
 // directory for autom scripts
 std::string home_dir = "";
