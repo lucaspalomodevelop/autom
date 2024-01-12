@@ -55,10 +55,122 @@ std::string scriptBuilder(std::string script, std::string args, json script_sett
     if (script_settings.contains("background") && script_settings.at("background").get<bool>())
         builded_script = builded_script + " &";
 
-    std::cout
-        << "script: " << builded_script << std::endl;
+    // std::cout << "script: " << builded_script << std::endl;
 
     return builded_script;
+}
+
+automScript parse(const std::string filecontent)
+{
+    std::stringstream file(filecontent);
+
+    std::string line, content, script;
+    int braceCount = 0;
+    bool isSettings = true;
+    while (std::getline(file, line))
+    {
+        for (char c : line)
+        {
+            if (c == '{')
+                braceCount++;
+            if (c == '}')
+                braceCount--;
+            if (braceCount == 0 && isSettings)
+            {
+                content += c;
+                isSettings = false;
+                continue;
+            }
+            if (isSettings)
+            {
+                content += c;
+            }
+            else
+            {
+                script += c;
+            }
+        }
+        content += '\n';
+        if (!isSettings)
+        {
+            script += '\n';
+        }
+    }
+
+    automScript result;
+    try
+    {
+        result.settings = json::parse(content);
+    }
+    catch (json::parse_error &e)
+    {
+        result.settings = json::parse("{}");
+    }
+    result.script = script;
+
+    // std::cout << "settings: " << result.settings << std::endl;
+    // std::cout << "script: " << result.script << std::endl;
+
+    return result;
+}
+
+automScript parseAndWriteBack(std::string script)
+{
+    std::ifstream file(script);
+    std::string filecontent;
+    std::string line;
+    while (std::getline(file, line))
+    {
+        filecontent += line + "\n";
+    }
+    file.close();
+
+    automScript parsed = parse(filecontent);
+
+    std::ofstream file2(script);
+    file2 << parsed.script;
+    file2.close();
+
+    return parsed;
+}
+
+std::string saveScriptInTemp(std::string script)
+{
+    std::string temp_file = settings.value["temp_dir"].get<std::string>() + "/autom_script";
+    std::ofstream file(temp_file);
+
+    std::string script_content = "";
+    std::ifstream file2(script);
+    std::string line;
+
+    while (std::getline(file2, line))
+    {
+        script_content += line + "\n";
+    }
+
+    file << script_content;
+    file.close();
+
+    std::filesystem::permissions(temp_file, std::filesystem::perms::owner_all | std::filesystem::perms::group_all | std::filesystem::perms::others_all);
+
+    return temp_file;
+}
+
+void cleanTempFile()
+{
+    std::string temp_file = settings.value["temp_dir"].get<std::string>() + "/autom_script";
+    std::filesystem::remove(temp_file);
+}
+
+json mergeJson(json a, json b)
+{
+    json result = a;
+    for (auto &el : b.items())
+    {
+        // std::cout << "key: " << el.key() << " value: " << el.value() << std::endl;
+        result[el.key()] = el.value();
+    }
+    return result;
 }
 
 // run a script with is in the autom directory
@@ -109,14 +221,26 @@ void runScript(int argc, char *argv[])
     {
         std::string pre_script = "cd " + dir + " && ";
         std::string args = "";
+        std::string original_script = script;
+
+        // std::cout << "original script: " << original_script << std::endl;
+
         for (int i = 2; i < argc; i++)
         {
             args += argv[i];
             args += " ";
         }
         // std::string script = pre_script + dir + "/" + argv[1] + " " + args;
+
+        script = saveScriptInTemp(script);
+
+        json json_settings = parseAndWriteBack(script).settings;
+
+        script_settings = mergeJson(script_settings, json_settings);
+
         script = scriptBuilder(script, args, script_settings);
-        std::cout << "executing: " << (dir + "/" + argv[1] + " " + args) << std::endl;
+
+        // std::cout << "executing: " << (script + " " + args) << std::endl;
 
         // if (script_settings["sudo"])
         //     script = "sudo " + script;
@@ -128,6 +252,8 @@ void runScript(int argc, char *argv[])
         //     system(script_settings["pre_script"].get<std::string>().c_str());
 
         system(script.c_str());
+
+        cleanTempFile();
         return;
     }
     // }
