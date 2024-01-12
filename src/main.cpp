@@ -156,6 +156,12 @@ std::string saveScriptInTemp(std::string script)
     return temp_file;
 }
 
+void cleanTempFile()
+{
+    std::string temp_file = settings.value["temp_dir"].get<std::string>() + "/autom_script";
+    std::filesystem::remove(temp_file);
+}
+
 json mergeJson(json a, json b)
 {
     json result = a;
@@ -246,6 +252,8 @@ void runScript(int argc, char *argv[])
         //     system(script_settings["pre_script"].get<std::string>().c_str());
 
         system(script.c_str());
+
+        cleanTempFile();
         return;
     }
     // }
