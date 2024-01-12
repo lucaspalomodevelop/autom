@@ -55,8 +55,7 @@ std::string scriptBuilder(std::string script, std::string args, json script_sett
     if (script_settings.contains("background") && script_settings.at("background").get<bool>())
         builded_script = builded_script + " &";
 
-    std::cout
-        << "script: " << builded_script << std::endl;
+    // std::cout << "script: " << builded_script << std::endl;
 
     return builded_script;
 }
@@ -109,8 +108,8 @@ automScript parse(const std::string filecontent)
     }
     result.script = script;
 
-    std::cout << "settings: " << result.settings << std::endl;
-    std::cout << "script: " << result.script << std::endl;
+    // std::cout << "settings: " << result.settings << std::endl;
+    // std::cout << "script: " << result.script << std::endl;
 
     return result;
 }
@@ -162,7 +161,7 @@ json mergeJson(json a, json b)
     json result = a;
     for (auto &el : b.items())
     {
-        std::cout << "key: " << el.key() << " value: " << el.value() << std::endl;
+        // std::cout << "key: " << el.key() << " value: " << el.value() << std::endl;
         result[el.key()] = el.value();
     }
     return result;
@@ -218,7 +217,7 @@ void runScript(int argc, char *argv[])
         std::string args = "";
         std::string original_script = script;
 
-        std::cout << "original script: " << original_script << std::endl;
+        // std::cout << "original script: " << original_script << std::endl;
 
         for (int i = 2; i < argc; i++)
         {
@@ -235,7 +234,7 @@ void runScript(int argc, char *argv[])
 
         script = scriptBuilder(script, args, script_settings);
 
-        std::cout << "executing: " << (script + " " + args) << std::endl;
+        // std::cout << "executing: " << (script + " " + args) << std::endl;
 
         // if (script_settings["sudo"])
         //     script = "sudo " + script;
