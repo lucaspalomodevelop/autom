@@ -62,17 +62,23 @@ std::string scriptBuilder(std::string script, std::string args, json script_sett
 
 automScript parse(const std::string filecontent)
 {
+
+    std::cout << "filecontent before parse: " << filecontent << std::endl;
     std::stringstream file(filecontent);
 
     std::string line, content, script;
     int braceCount = 0;
-    bool isSettings = true;
+    bool isSettings = false;
+    bool start = false;
     while (std::getline(file, line))
     {
         for (char c : line)
         {
             if (c == '{')
+            {
                 braceCount++;
+                isSettings = true;
+            }
             if (c == '}')
                 braceCount--;
             if (braceCount == 0 && isSettings)
@@ -108,8 +114,8 @@ automScript parse(const std::string filecontent)
     }
     result.script = script;
 
-    // std::cout << "settings: " << result.settings << std::endl;
-    // std::cout << "script: " << result.script << std::endl;
+    std::cout << "settings: " << result.settings << std::endl;
+    std::cout << "script: " << result.script << std::endl;
 
     return result;
 }
@@ -128,6 +134,7 @@ automScript parseAndWriteBack(std::string script)
     automScript parsed = parse(filecontent);
 
     std::ofstream file2(script);
+    std::cout << "script: " << parsed.script << std::endl;
     file2 << parsed.script;
     file2.close();
 
@@ -145,10 +152,10 @@ std::string saveScriptInTemp(std::string script)
 
     while (std::getline(file2, line))
     {
-        script_content += line + "\n";
+        file << line << std::endl;
     }
 
-    file << script_content;
+    file.flush();
     file.close();
 
     std::filesystem::permissions(temp_file, std::filesystem::perms::owner_all | std::filesystem::perms::group_all | std::filesystem::perms::others_all);
@@ -234,6 +241,8 @@ void runScript(int argc, char *argv[])
 
         script = saveScriptInTemp(script);
 
+        std::cout << "script: " << script << std::endl;
+
         json json_settings = parseAndWriteBack(script).settings;
 
         script_settings = mergeJson(script_settings, json_settings);
@@ -253,7 +262,7 @@ void runScript(int argc, char *argv[])
 
         system(script.c_str());
 
-        cleanTempFile();
+        // cleanTempFile();
         return;
     }
     // }
