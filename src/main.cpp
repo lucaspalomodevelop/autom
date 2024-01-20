@@ -63,7 +63,7 @@ std::string scriptBuilder(std::string script, std::string args, json script_sett
 automScript parse(const std::string filecontent)
 {
 
-    std::cout << "filecontent before parse: " << filecontent << std::endl;
+    // std::cout << "filecontent before parse: " << filecontent << std::endl;
     std::stringstream file(filecontent);
 
     std::string line, content, script;
@@ -114,8 +114,8 @@ automScript parse(const std::string filecontent)
     }
     result.script = script;
 
-    std::cout << "settings: " << result.settings << std::endl;
-    std::cout << "script: " << result.script << std::endl;
+    // std::cout << "settings: " << result.settings << std::endl;
+    // std::cout << "script: " << result.script << std::endl;
 
     return result;
 }
@@ -134,7 +134,7 @@ automScript parseAndWriteBack(std::string script)
     automScript parsed = parse(filecontent);
 
     std::ofstream file2(script);
-    std::cout << "script: " << parsed.script << std::endl;
+    // std::cout << "script: " << parsed.script << std::endl;
     file2 << parsed.script;
     file2.close();
 
@@ -241,7 +241,7 @@ void runScript(int argc, char *argv[])
 
         script = saveScriptInTemp(script);
 
-        std::cout << "script: " << script << std::endl;
+        // std::cout << "script: " << script << std::endl;
 
         json json_settings = parseAndWriteBack(script).settings;
 
