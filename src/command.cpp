@@ -4,7 +4,6 @@ Command::Command() {}
 
 Command::~Command() {}
 
-
 // add a command alias to the command map
 void Command::addCommandAlias(std::string name, std::string alias)
 {
@@ -15,8 +14,26 @@ void Command::addCommandAlias(std::string name, std::string alias)
     commands[alias] = mycommand;
 }
 
-// add a command to the command map
-void Command::addCommand(std::string name, void (*func)(int argc, char *argv[]))
+// // add a command to the command map
+// void Command::addCommand(std::string name, void (*func)(int argc, char *argv[]))
+// {
+//     CommandInfo mycommand{
+//         name,
+//         "",
+//         func};
+//     commands[name] = mycommand;
+// }
+
+// void Command::addCommand(std::string name, std::string description, void (*func)(int argc, char *argv[]))
+// {
+//     CommandInfo mycommand{
+//         name,
+//         description,
+//         func};
+//     commands[name] = mycommand;
+// }
+
+void Command::addCommand(std::string name, std::function<void(int argc, char *argv[])> func)
 {
     CommandInfo mycommand{
         name,
@@ -25,7 +42,7 @@ void Command::addCommand(std::string name, void (*func)(int argc, char *argv[]))
     commands[name] = mycommand;
 }
 
-void Command::addCommand(std::string name, std::string description, void (*func)(int argc, char *argv[]))
+void Command::addCommand(std::string name, std::string description, std::function<void(int argc, char *argv[])> func)
 {
     CommandInfo mycommand{
         name,
@@ -35,7 +52,12 @@ void Command::addCommand(std::string name, std::string description, void (*func)
 }
 
 // add a default command to the command map
-void Command::addDefaultCommand(void (*func)(int argc, char *argv[]))
+// void Command::addDefaultCommand(void (*func)(int argc, char *argv[]))
+// {
+//     defaultCommand = func;
+// }
+
+void Command::addDefaultCommand(std::function<void(int argc, char *argv[])> func)
 {
     defaultCommand = func;
 }
@@ -61,7 +83,6 @@ void Command::runCommand(std::string name, int argc, char *argv[])
     }
 }
 
-
 // check if a command is in the command map
 bool Command::isInCommands(std::string name)
 {
@@ -81,7 +102,6 @@ std::string Command::listCommands()
 {
     std::string list = "";
 
-    
     for (std::map<std::string, CommandInfo>::iterator it = commands.begin(); it != commands.end(); ++it)
     {
         list += "\t" + it->second.name + " " + it->second.description + "\n";

@@ -20,17 +20,12 @@ void input(int argc, char *argv[])
     // std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
     command.addCommand("run", "[script] - Runs a script", runScript);
     command.addCommand("help", "- Shows this help message", help);
-    command.addCommandAlias("help", "h");
+
     command.addCommand("ls", "- Lists all scripts ", listScripts);
-    command.addCommandAlias("ls", "l");
     command.addCommand("add", "[script] - Adds a script", addScript);
-    command.addCommandAlias("add", "a");
     command.addCommand("edit", "[script] - Edits a script", editScript);
-    command.addCommandAlias("edit", "e");
     command.addCommand("remove", "[script] - Remove a script", removeScript);
-    command.addCommandAlias("remove", "r");
     command.addCommand("show", "[script] - Shows a script", showScript);
-    command.addCommandAlias("show", "s");
     command.addCommand("config", "<command> - Configures autom", config);
 
     command.addDefaultCommand(runScript);
@@ -458,7 +453,7 @@ void addScript(int argc, char *argv[])
 
     file.close();
 
-    editScript(argv[1], dir);
+    editScript_fn(argv[1], dir);
 }
 
 // edit a script in the autom directory
@@ -500,10 +495,10 @@ void editScript(int argc, char *argv[])
         dir = dir_options[num];
     }
 
-    editScript(argv[1], dir);
+    editScript_fn(argv[1], dir);
 }
 
-void editScript(std::string name, std::string dir)
+void editScript_fn(std::string name, std::string dir)
 {
     std::string script = dir + "/" + name;
 
