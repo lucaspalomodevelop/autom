@@ -1,8 +1,10 @@
 # autom
+<img src="./readme/img/autom-logo.png">
 
 **IN DEVELOPMENT, NOT READY FOR USE**
 
 autom is a command-line tool for executing shell scripts, independent of the working directory.
+
 
 ## Installation Requirements
 - gcc
