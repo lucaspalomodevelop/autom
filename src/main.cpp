@@ -20,18 +20,14 @@ void input(int argc, char *argv[])
     // std::cout << "  [script] - Runs a script if autom has not command with that name" << std::endl;
     command.addCommand("run", "[script] - Runs a script", runScript);
     command.addCommand("help", "- Shows this help message", help);
-    command.addCommandAlias("help", "h");
+
     command.addCommand("ls", "- Lists all scripts ", listScripts);
-    command.addCommandAlias("ls", "l");
     command.addCommand("add", "[script] - Adds a script", addScript);
-    command.addCommandAlias("add", "a");
     command.addCommand("edit", "[script] - Edits a script", editScript);
-    command.addCommandAlias("edit", "e");
     command.addCommand("remove", "[script] - Remove a script", removeScript);
-    command.addCommandAlias("remove", "r");
     command.addCommand("show", "[script] - Shows a script", showScript);
-    command.addCommandAlias("show", "s");
     command.addCommand("config", "<command> - Configures autom", config);
+    command.addCommand("logo", "- Shows the autom logo", logo);
 
     command.addDefaultCommand(runScript);
     command.runCommand(argv[1], argc, argv);
@@ -268,6 +264,54 @@ void runScript(int argc, char *argv[])
     // }
 }
 
+void logo(int argc, char *argv[])
+{
+    std::cout << "         ,,irs2XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXAsri,,         " << std::endl;
+    std::cout << "      .:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXs:.      " << std::endl;
+    std::cout << "    .iXXXXsrii;:;::;:::::::::::::::::::::::::::::::::::::::::::::;iirsXXXXi.    " << std::endl;
+    std::cout << "   :XXXXr;::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;rsXXX;   " << std::endl;
+    std::cout << "  ;XXXs;:::;irssssssssssssssssssssssssssssssssssssssssssssssssssssri;:::;rXXXi  " << std::endl;
+    std::cout << " :XsXr:::;rXsssXXXsssXXXsX2AXXXXXXXXXXXXXXXXXXXXXXXsA2XsXXXsssXXXsssXsi:::iXXXi " << std::endl;
+    std::cout << ",sssr:::isXXhMhXsAMMhXXX39&BS2sXXXXXXssssssXXXXXXXASB&9hXsX3MhAss5MhXXsi:::iXss," << std::endl;
+    std::cout << "isss;::;sXs2@@@hrM@@@5s2&@@@@Msrri;;;::::::;;;irrrh@@@@@5s2&@@MsX&@@3ssXi:::ssX:" << std::endl;
+    std::cout << "sssr:::rXssX3H3XsX3G5XsshBB9hi:::::::,,,,,,:::::::iM9BBMXss2HhAss3HhXssss:::rssX" << std::endl;
+    std::cout << "sssr::;sssssssssssssssXsri;:,::::::,:r2222r:,::::::,::irsXXssssssssssssss;::rsss" << std::endl;
+    std::cout << "sssr::;sssssssssXsssXsi;,,;:,:::::,sG&@@@@&#A,:::::,:;,,;isXssXXsssssssss:::rsss" << std::endl;
+    std::cout << "sssr::;sssssssh#B#HAi;::sGB#hi:::,2&@@@&&@@@&A,:::;h#BG2:::rsh#B#HXssssss;::rssr" << std::endl;
+    std::cout << "rssr::;ssssss2@@@@@2,:,s@@@@@#::,sB@@@#sr#@@@BX,::M@@@@@s,:,2@@@@@5ssssss;::rssr" << std::endl;
+    std::cout << "rrsr:::ssssssA9@@@Bs,::;G&@@B5:,i9@@@&r,,iB@@@Bi,,AB@@@9i,:,r#@@@BAssssss;::rssr" << std::endl;
+    std::cout << "rrrr:::sssssssX53X;::::,:s55i,:;S@@@&2,::,X&@@@#;,,i25X;,:::,;X35Xsssssss;::rsrr" << std::endl;
+    std::cout << "rrrr:::ssssssssi:,:,:::::,,,:::M@@@@h,::::,5@@@@G;::,,,:::::,,,,issssssss;::rrrr" << std::endl;
+    std::cout << "rrri::;sssssssr:::;5###########&@@@M:::::::,M@@@@9##########hi:::isssssss;::irrr" << std::endl;
+    std::cout << "rrri:::ssssssr:::,X@@@@@@@@@@@@@@@G:,::::::,:S@@@@@@@@@@@@@@@h,:::rssssss;::irri" << std::endl;
+    std::cout << "rrri:::rrrrss;::::;399999999&@@@@9i,::::::::,i#@@@@B99999999Mr::::;ssssss;::irri" << std::endl;
+    std::cout << "rrri:::rrrrsr::::::,:::::::i9@@@&s,::::::::::,i9@@@9r:::::::,::::::isssss;::irri" << std::endl;
+    std::cout << "rrri:::rrrrr;::::::::::::::G@@@&A,::::::::::::,X&@@@9;,::::::::::::;rrrrs;::irri" << std::endl;
+    std::cout << "irri:::rrrrr::::,:;,,::::,h@@@&2.,,,,,::::,,,,,.A&@@@H:::::,,;:,::::rrrrs;::irri" << std::endl;
+    std::cout << "irri:::rrrrr:::ih#9Hs:::,5@@@@&HHHHHMr::::rMHHHHHB@@@@A,::,rH9Shi:::rrrrr:::irri" << std::endl;
+    std::cout << "irri:::rrrrr:::H@@@@@s,,X&@@@@@@@@@@@&i::;B@@@@@@@@@@Bs,:,i9@@@@#:::rrrrr:::irri" << std::endl;
+    std::cout << "iiri:::rrrrr::,AB@@&H;,r9@@@&9999999Sh::::2S999999#SMr,::::h&@@B5:::rrrrr:::irii" << std::endl;
+    std::cout << "iiii:::rrrri:::,i25s,,;9@@@Br;;;;;;;,,,,,,,,:;;;;;:,,,:::,,,s52i,:::rrrrr:::iiii" << std::endl;
+    std::cout << "iiii:::rrrrr;:::,,,,:;S@@@&A,:::::,issssssssr:::::::,iG#9H;,,,,,:::;rrrrr:::iiii" << std::endl;
+    std::cout << "iiii:::rrrrri:::::::,M@@@@h,::::::hB@@@@@@@@&H::::::,X@@@@G::::::::irrrrr:::iiii" << std::endl;
+    std::cout << "iii;:::rrrrrr;:::::,2&@@@H::::::::G@@@@@@@@@@G;:::::::H@@@@M,::::::rrrrrr:::;iii" << std::endl;
+    std::cout << "iii;:::riiiiri::::,s&@@@#i::::::::;AhhhhhhhhA;:::::::,;S@@@@A,::::irriiii:::;ii;" << std::endl;
+    std::cout << "iii;:::iiiiiiii:::,H@@@@5.,::::::::,,,,,,,,,,::::::::,.5@@@@H,:::;iiiiiii:::;ii;" << std::endl;
+    std::cout << "iii;:::iiiiiiiii:::rB@@@&MX:,,::::::::::::::::::::,,:rM&@@@&A,::;iiiiiiii:::;ii;" << std::endl;
+    std::cout << "iii;:::iiiiiiiiii::,iS@@@@@#hr:,,,,::::::::::,,,,:r3#&@@@@9X,::;iiiiiiiii:::;ii;" << std::endl;
+    std::cout << "iii;:::iiiiiiiiiii;:,;XG&@@@@&9H5Xs;;;;;;;;;;rA2M#&@@@@&GA;,:;;i;iiiiiiii:::;i;;" << std::endl;
+    std::cout << ";;i;:::iiiiiiii22Xi;::,:i5S&@@@@@@&BBBB999BBB&@@@@@@&S3s:,::iiX22riiiiiii:::;i;;" << std::endl;
+    std::cout << "i;;;:::iiiiiis#@@&Giii;::,:iAhG9&@@@@@@@@@@@@@@&BSM2i:,,::;iiM&@@9X;iiiii:::;i;;" << std::endl;
+    std::cout << ":;;;:::;iiii;A@@@@9riiii;::,,,,;is55MSSSSSSH55Xii,,,,::;iiii;#@@@@2;iiii;:::;;i," << std::endl;
+    std::cout << " ;;;;:::;iiiii5H#hsiiiiiiii;;:::,,,,,,,,,,,,,,,,:::;;iiiiiiiisM#H5iiiii;::::;;;." << std::endl;
+    std::cout << " ,;;;::::;iiii;;i;iiiiiiiiiiiiii;;;;;:::::::;;;;iiiiiiiiiiiii;;i;;iiii;::::;;;, " << std::endl;
+    std::cout << "  :;;;::::::;iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii;::::::;;;:  " << std::endl;
+    std::cout << "   ,;;;;::::::::::;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:;:::::::;;;;:   " << std::endl;
+    std::cout << "    .:;;::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;;:.    " << std::endl;
+    std::cout << "      .:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::,.      " << std::endl;
+    std::cout << "         .:,::::::::::::::::::::::::::::::::::::::::::::::::::::::::,,.         " << std::endl;
+}
+
 void config(int argc, char *argv[])
 {
 
@@ -458,7 +502,7 @@ void addScript(int argc, char *argv[])
 
     file.close();
 
-    editScript(argv[1], dir);
+    editScript_fn(argv[1], dir);
 }
 
 // edit a script in the autom directory
@@ -500,10 +544,10 @@ void editScript(int argc, char *argv[])
         dir = dir_options[num];
     }
 
-    editScript(argv[1], dir);
+    editScript_fn(argv[1], dir);
 }
 
-void editScript(std::string name, std::string dir)
+void editScript_fn(std::string name, std::string dir)
 {
     std::string script = dir + "/" + name;
 
