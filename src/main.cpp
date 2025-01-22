@@ -65,7 +65,7 @@ automScript parse(const std::string filecontent)
     std::string line, content, script;
     int braceCount = 0;
     bool isSettings = false;
-    bool start = false;
+    // bool start = false;
     while (std::getline(file, line))
     {
         for (char c : line)
@@ -472,7 +472,7 @@ void addScript(int argc, char *argv[])
     {
         std::cout << "Which directory do you want to add the script to?" << std::endl;
         auto search_dirs = settings.value["search_dirs"];
-        for (int i = 0; i < search_dirs.size(); i++)
+        for (std::vector<std::string>::size_type i = 0; i < search_dirs.size(); i++)
         {
             std::cout << i << " " << search_dirs[i] << std::endl;
         }
