@@ -70,7 +70,9 @@ public:
             {"editor", editor},
             {"search_dirs", {home}},
             {"temp_dir", home + "/temp"},
-            {"autom_home_dir", home}};
+            {"autom_home_dir", home},
+            {"cron_file", home + "/cron.txt"},
+            {"scripts", {}}};
 
         file << j.dump(4);
 

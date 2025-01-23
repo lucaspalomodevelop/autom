@@ -1,4 +1,7 @@
 #include "command.h"
+#include <map>
+#include <string>
+#include <functional>
 
 Command::Command() {}
 

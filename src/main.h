@@ -48,6 +48,8 @@ void editScript_fn(std::string name, std::string dir);
 void removeScript(int argc, char *argv[]);
 // show a script in the autom directory
 void showScript(int argc, char *argv[]);
+// cron function for executing cron jobs
+void cron(int argc, char *argv[]);
 // help function for showing help message
 void help(int argc, char *argv[]);
 

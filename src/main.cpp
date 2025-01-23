@@ -27,6 +27,7 @@ void input(int argc, char *argv[])
     command.addCommand("remove", "[script] - Remove a script", removeScript);
     command.addCommand("show", "[script] - Shows a script", showScript);
     command.addCommand("config", "<command> - Configures autom", config);
+    command.addCommand("cron", "<command> - Executes cron jobs", cron);
     command.addCommand("logo", "- Shows the autom logo", logo);
 
     command.addDefaultCommand(runScript);
@@ -602,6 +603,14 @@ void removeScript(int argc, char *argv[])
     {
         std::cout << "Script " << argv[1] << " does not exist" << std::endl;
     }
+}
+
+void cron(int argc, char *argv[])
+{
+    std::string cron_file = settings.value["cron_file"];
+
+    Cron cron();
+    cron.run();
 }
 
 // help function for showing help message
