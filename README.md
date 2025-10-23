@@ -15,7 +15,7 @@ autom is a command-line tool for executing shell scripts, independent of the wor
 
 ## Compilation
 
-1. Clone or download the QuickNote repository.
+1. Clone or download the autom repository.
 
 2. Make sure you have a C++ compiler installed on your system.
 
@@ -64,5 +64,6 @@ If you encounter any issues, have suggestions for improvements, or would like to
 This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ## Authors
+
 
 autom was developed by [lucaspalomodevelop](https://github.com/lucaspalomodevelop).
